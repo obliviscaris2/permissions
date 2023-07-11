@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class UtilityFunctions{
+
    static function getUserIP() {
+
         $ipaddress = '';
+
         if (isset($_SERVER['HTTP_CLIENT_IP']))
             $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
         else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
@@ -26,11 +29,13 @@ class UtilityFunctions{
             $ipaddress = $_SERVER['REMOTE_ADDR'];
         else
             $ipaddress = 'UNKNOWN';
+            
         return $ipaddress;
     }
 
     static function getRole(){
-        if (User::isSuperAdmin()) {
+
+        if ( User::isSuperAdmin() ) {
             $role = Role::with('permissions')->whereNotIn('id', [1])->get();
         } else {
             $role = Role::with('permissions')->whereNotIn('id', [1, 2])->get();
@@ -54,10 +59,15 @@ class UtilityFunctions{
     }
 
     static function customPaginate($currentPage,$array,$perPage,$request){
+
         $itemCollection = collect($array);
+
         $currentPageItems = $itemCollection->slice(($currentPage * $perPage) - $perPage, $perPage)->all();
+
         $paginatedItems= new LengthAwarePaginator($currentPageItems , count($itemCollection), $perPage);
+
         $paginatedItems->setPath($request->url());
+
         return $paginatedItems;
     }
 

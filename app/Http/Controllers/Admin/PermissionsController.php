@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\UtilityFunctions;
 use App\Models\Role;
+use PhpParser\Node\Stmt\TryCatch;
 
 class PermissionsController extends Controller
 {
@@ -23,8 +24,12 @@ class PermissionsController extends Controller
     public function index()
     {
         abort_unless(Gate::allows('hasPermission','view_permissions'),403);
-        $data=Permission::all(['id','name']);
-        return view('admin.permissions.index',['data'=>$data]);
+
+        $permissions = Permission::all(['id','name']);
+
+        return view('admin.permissions.index',[
+            'permissions' => $permissions
+        ]);
     }
 
     /**
@@ -35,6 +40,7 @@ class PermissionsController extends Controller
     public function create()
     {
         abort_unless(Gate::allows('hasPermission','create_permissions'),403);
+
         return view('admin.permissions.create');
     }
 
@@ -47,31 +53,31 @@ class PermissionsController extends Controller
     public function store(Request $request)
     {
         abort_unless(Gate::allows('hasPermission','create_permissions'),403);
-        $permission = new Permission;
-        $permission->name = $convertedString=str_replace(' ', '-', $request['name']);
-        if ($permission->save()) {
-            Role::find(1)->permissions()->attach($permission->id);
-            History::create([
-                'description' => 'Created permission ' . $convertedString,
-                'user_id' => Auth::user()->id,
-                'type'=>1,
-                'ip_address'=>UtilityFunctions::getUserIP(),
-            ]);
-            return Redirect()->route('admin.permissions.index')->with('successMessage','Success!! Permission created');
-        } else {
-            return Redirect::back()->with('errorMessage','Error!! Permission not created');
-        }
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Permission  $permission
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Permission $permission)
-    {
-        //
+        try {
+                
+            $permission = new Permission;
+
+            $permission->name = $convertedString=str_replace(' ', '-', $request['name']);
+
+            if ($permission->save()) {
+
+                Role::find(1)->permissions()->attach($permission->id);
+
+                History::create([
+                    'description' => 'Created permission ' . $convertedString,
+                    'user_id' => Auth::user()->id,
+                    'type'=>1,
+                    'ip_address'=>UtilityFunctions::getUserIP(),
+                ]);
+
+                return Redirect()->route('admin.permissions.index')->with('success','Success!! Permission created');
+            }
+
+        } catch (\Exception ) {
+            return redirect()->back()->with('error','Error!! Permission not created');
+        }
+
     }
 
     /**
@@ -83,7 +89,9 @@ class PermissionsController extends Controller
     public function edit($id)
     {
         abort_unless(Gate::allows('hasPermission','update_permissions'),403);
+
         $permission = Permission::whereIn('id', [$id])->first();
+
         return view('admin.permissions.update', ['permission' => $permission]);
     }
 
@@ -97,21 +105,30 @@ class PermissionsController extends Controller
     public function update(Request $request)
     {
         abort_unless(Gate::allows('hasPermission','update_permissions'),403);
-        $permission=Permission::find($request->id);
-        $this->validate($request,[
-            'name' => ['required', Rule::unique('permissions')->ignore($request->id)],
-        ]);
-        $permission->name=$request->name;
-        if ($permission->update()) {
-            History::create([
-                'description' => 'Update permission with id ' . $request->id,
-                'user_id' => Auth::user()->id,
-                'type' => 1,
-                'ip_address' => UtilityFunctions::getUserIP(),
+
+        try {
+    
+            $permission=Permission::find($request->id);
+    
+            $this->validate($request,[
+                'name' => ['required', Rule::unique('permissions')->ignore($request->id)],
             ]);
-            return Redirect()->route('admin.permissions.index')->with('successMessage', 'Success!! Permission Updated');
-        } else {
-            return Redirect::back()->with('errorMessage', 'Error!! Permission Not Updated');
+    
+            $permission->name=$request->name;
+    
+            if ( $permission->update() ) {
+                History::create([
+                    'description' => 'Update permission with id ' . $request->id,
+                    'user_id' => Auth::user()->id,
+                    'type' => 1,
+                    'ip_address' => UtilityFunctions::getUserIP(),
+                ]);
+                return Redirect()->route('admin.permissions.index')->with('success', 'Success!! Permission Updated');
+    
+            }
+
+        } catch (\Exception) {
+            return redirect()->back()->with('error', 'Error!! Permission Not Updated');
         }
     }
 
@@ -124,18 +141,24 @@ class PermissionsController extends Controller
     public function destroy($id)
     {
         abort_unless(Gate::allows('hasPermission','delete_permissions'),403);
-        $permission=Permission::find($id);
-        if ($permission->delete()) {
-            $permission->roles()->detach();
-            History::create([
-                'description' => 'Deleted permission with id ' . $id,
-                'user_id' => Auth::user()->id,
-                'type' => 1,
-                'ip_address' => UtilityFunctions::getUserIP(),
-            ]);
-            return Redirect()->route('admin.permissions.index')->with('successMessage', 'Success!! Permission Deleted');
-        } else {
-            return Redirect::back()->with('errorMessage', 'Error!! Failed to delete permission');
+
+
+        try {
+
+            $permission=Permission::find($id);
+            if ($permission->delete()) {
+                $permission->roles()->detach();
+                History::create([
+                    'description' => 'Deleted permission with id ' . $id,
+                    'user_id' => Auth::user()->id,
+                    'type' => 1,
+                    'ip_address' => UtilityFunctions::getUserIP(),
+                ]);
+
+                return Redirect()->route('admin.permissions.index')->with('success', 'Success!! Permission Deleted');
+            }
+        } catch (\Exception) {
+            return redirect()->back()->with('error', 'Error!! Failed to delete permission');
         }
     }
 }

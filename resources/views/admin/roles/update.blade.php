@@ -3,7 +3,10 @@
 <!-- Main content -->
 @section('content')
 @include('admin.includes.forms')
-    <?php $permission = App\Models\Permission::all(); ?>
+
+
+
+
     <div class="card-header">
         <h1 class="card-title">Update Role</h1>
     </div>
@@ -23,15 +26,20 @@
             <div class="form-group" data-select2-id="39">
                 <label>Permissions</label>
                 <div class="select2-purple" data-select2-id="38">
-                    <select class="select2 select2-hidden-accessible" multiple="" name="permissions[]"
+                    {{-- <select class="select2 select2-hidden-accessible" multiple="" name="permissions[]"
                         data-placeholder="Choose Permissions" data-dropdown-css-class="select2-purple" style="width: 100%;"
                         data-select2-id="15" tabindex="-1" aria-hidden="true">
-                        @foreach ($permission as $permission)
-                            <option value="{{ $permission->id }}" @if ($role->permissions->contains($permission->id))
-                                selected
-                            @endif>{{ $permission->name }}</option>
+                        @foreach ($permissions as $permission)
+                            <option value="{{ $permission->id }}" @if ($role->permissions->contains($permission->id)) selected @endif>
+                                {{ $permission->name }}
+                            </option>
                         @endforeach
-                    </select>
+                    </select> --}}
+
+                    @foreach ($permissions as $permission)
+                        <input type="checkbox" id="permission" name="permissions[]" value="{{ $permission->id }}" @if ($role->permissions->contains($permission->id)) checked @endif>
+                        <label for="permission"> {{ $permission->name }}</label><br>
+                    @endforeach
                 </div>
             </div>
         </div>
@@ -46,6 +54,14 @@
             $.noConflict();
             //Initialize Select2 Elements
             $('.select2').select2()
+
+            $(document).ready(function() {
+                $('.select2').select2();
+            });
+
+            $(document).ready(function() {
+                $('.chosen-select').chosen();
+            });
 
             $('#quickForm').validate({
                 rules: {
@@ -81,6 +97,7 @@
         function replaceFunction(val) {
             document.getElementById('exampleInputName').value=val.replace(' ', '-');
         }
+
 
     </script>
 @endsection

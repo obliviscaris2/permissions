@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 @include('admin.includes.head')
+
 <body>
 
     <!-- ===============================================-->

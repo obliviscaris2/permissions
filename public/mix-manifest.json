@@ -3,5 +3,7 @@
     "/css/app.css": "/css/app.css",
     "/js/slick.js": "/js/slick.js",
     "/css/slick.css": "/css/slick.css",
-    "/css/slick-theme.css": "/css/slick-theme.css"
+    "/css/slick-theme.css": "/css/slick-theme.css",
+    "/css/chosen.css": "/css/chosen.css",
+    "/js/chosen.jquery.min.js": "/js/chosen.jquery.min.js"
 }

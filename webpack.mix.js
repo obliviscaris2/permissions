@@ -15,6 +15,11 @@ mix.js('resources/js/app.js', 'public/js')
     .vue()
     .sass('resources/sass/app.scss', 'public/css');
 
+
 mix.copy('node_modules/slick-carousel/slick/slick.min.js', 'public/js/slick.js');
 mix.copy('node_modules/slick-carousel/slick/slick.css', 'public/css/slick.css');
 mix.copy('node_modules/slick-carousel/slick/slick-theme.css', 'public/css/slick-theme.css');
+mix.copy('node_modules/chosen-js/chosen.css', 'public/css')
+mix.copy('node_modules/chosen-js/chosen.jquery.min.js', 'public/js');
+
+

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionsController;
+use App\Http\Controllers\Admin\RolesController;
+use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -16,37 +19,41 @@ Route::prefix('/admin')->namespace('Admin')->name('admin.')->middleware(['web', 
 
     Route::get('/', [ AdminController::class, 'index'])->name('index');
 
-    //Users
-    Route::get('/users/', 'UsersController@index')->name('users.index');
-    Route::get('/users/create', 'UsersController@create')->name('users.create');
-    Route::post('/users/store', 'UsersController@store')->name('users.store');
-    Route::get('/users/edit/{id}', 'UsersController@edit')->name('users.edit');
-    Route::post('/users/update', 'UsersController@update')->name('users.update');
-    Route::get('/users/delete/{id}', 'UsersController@destroy')->name('users.destroy');
-    Route::get('/users/deleted', 'UsersController@viewDeleted')->name('users.viewDeleted');
-    Route::get('/users/restore/{id}', 'UsersController@restore')->name('users.restore');
-    Route::get('/users/deletePermanent/{id}', 'UsersController@permanentDestroy')->name('users.permanentDestroy');
+    Route::as('users.')->prefix('users')->group(function () {
 
-    //Roles
-    Route::get('/roles/', 'RolesController@index')->name('roles.index');
-    Route::get('/roles/create', 'RolesController@create')->name('roles.create');
-    Route::post('/roles/store', 'RolesController@store')->name('roles.store');
-    Route::get('/roles/edit/{id}', 'RolesController@edit')->name('roles.edit');
-    Route::post('/roles/update', 'RolesController@update')->name('roles.update');
-    Route::get('/roles/delete/{id}', 'RolesController@destroy')->name('roles.destroy');
+        Route::get('/',                    [ UsersController::class, 'index'])->name('index');
+        Route::get('create',               [ UsersController::class, 'create'])->name('create');
+        Route::post('store',               [ UsersController::class, 'store'])->name('store');
+        Route::get('edit/{id',             [ UsersController::class, 'edit'])->name('edit');
+        Route::post('update',              [ UsersController::class, 'update'])->name('update');
+        Route::get('delete/{id}',          [ UsersController::class, 'destroy'])->name('destroy');
+        Route::get('deleted',              [ UsersController::class, 'viewDeleted'])->name('viewDeleted');
+        Route::get('restore/{id}',         [ UsersController::class, 'restore'])->name('restore');
+        Route::get('deletePermanent/{id}', [ UsersController::class, 'permanentDestroy'])->name('permanentDestroy');
+    });
 
-    //Permissions
-    Route::get('/permissions/', 'PermissionsController@index')->name('permissions.index');
-    Route::get('/permissions/create', 'PermissionsController@create')->name('permissions.create');
-    Route::post('/permissions/store', 'PermissionsController@store')->name('permissions.store');
-    Route::get('/permissions/edit/{id}', 'PermissionsController@edit')->name('permissions.edit');
-    Route::post('/permissions/update', 'PermissionsController@update')->name('permissions.update');
-    Route::get('/permissions/delete/{id}', 'PermissionsController@destroy')->name('permissions.destroy');
+    Route::as('roles.')->prefix('roles')->group(function () {
+        Route::get('/',                    [ RolesController::class, 'index'])->name('index');
+        Route::get('create',               [ RolesController::class, 'create'])->name('create');
+        Route::post('store',               [ RolesController::class, 'store'])->name('store');
+        Route::get('edit/{id}',            [ RolesController::class, 'edit'])->name('edit');
+        Route::post('update',              [ RolesController::class, 'update'])->name('update');
+        Route::get('delete/{id}',          [ RolesController::class, 'destroy'])->name('destroy');
+    });
 
-    //History
+
+    Route::as('permissions.')->prefix('permissions')->group(function () {
+        Route::get('/',                    [ PermissionsController::class, 'index'])->name('index');
+        Route::get('create',               [ PermissionsController::class, 'create'])->name('create');
+        Route::post('store',               [ PermissionsController::class, 'store'])->name('store');
+        Route::get('edit/{id}',            [ PermissionsController::class, 'edit'])->name('edit');
+        Route::post('update',              [ PermissionsController::class, 'update'])->name('update');
+        Route::get('delete/{id}',          [ PermissionsController::class, 'destroy'])->name('destroy');
+    });
+    
+    // ROUTE FOR HISTORY
     Route::get('/application-history/', 'HistoriesController@application_index')->name('application-history');
     Route::get('/system-history/', 'HistoriesController@system_index')->name('system-history');
-
    
 });
 

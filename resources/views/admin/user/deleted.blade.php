@@ -3,9 +3,9 @@
 <!-- Main content -->
 @section('content')
     @include('admin.includes.tables')
-    @include('admin.includes.modals')
     
     <hr>
+
     <div class="topbar" style="display: flex;">
         <a href="{{ route('admin.users.create') }}" style="text-decoration:none;width:auto;padding:5px;"><button
                 type="button" class="btn btn-block btn-success btn-lg" style="width:auto;">Add User <i
@@ -20,6 +20,27 @@
             </button>
         </a>
     </div>
+
+    
+    <!-- BEGIN: Alert -->
+    <div class="container">
+        @if (session()->has('success'))
+            <div class="alert alert-success alert-icon d-flex gap-4" role="alert" style="width: 700px;">
+                <div class="d-flex gap-4">
+                    <div class="alert-icon-aside">
+                        <i class="far fa-flag"></i>
+                    </div>
+                    <div class="alert-icon-content">
+                        {{ session('success') }}
+                    </div>
+                    <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                </div>
+            </div>
+        @endif
+    </div>
+    <!-- END: Alert -->
+
     <hr>
     <div class="card">
         <div class="card-header">
@@ -50,14 +71,14 @@
                             </thead>
 
                             <tbody>
-                                @if (isset($data))
-                                    @foreach ($data as $data)
+                                @if (isset($users))
+                                    @foreach ($users as $user)
                                         <tr class="odd">
-                                            <td class="dtr-control sorting_1" tabindex="0">{{ $data->name }}</td>
-                                            <td>{{ $data->email }}</td>
-                                            <td>{{ $data->roles->name }}</td>
+                                            <td class="dtr-control sorting_1" tabindex="0">{{ $user->name }}</td>
+                                            <td>{{ $user->email }}</td>
+                                            <td>{{ $user->roles->name }}</td>
                                             <td>
-                                                @if ($data->is_active == 1)
+                                                @if ($user->is_active == 1)
                                                     Active
                                                 @else
                                                     Inactive
@@ -66,24 +87,84 @@
                                             </td>
                                             <td>
                                                 <div style="display: flex;">
-                                                    <button type="button" class="btn btn-block btn-warning btn-sm"
-                                                data-toggle="modal" data-target="#modal-default" style="width:auto;"
-                                                onclick="replaceLinkFunction('/admin/users/restore/'.concat(<?php echo $data->id; ?>))">Restore</button>
-
-
-                                                <button type="button" class="btn btn-block btn-danger btn-sm"
-                                                    data-toggle="modal" data-target="#modal-default" style="width:auto;"
-                                                    onclick="replaceLinkFunction('/admin/users/deletePermanent/'.concat(<?php echo $data->id; ?>))">Permanent Delete</button>
+                                                    <button type="button" class="btn btn-outline-primary btn-sm mx-1"
+                                                    data-bs-toggle="modal" data-bs-target="#restore{{ $user->id }}">
+                                                    <i class="fa fa-window-restore" aria-hidden="true"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#delete{{ $user->id }}">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
                                                 </div>
                                             </td>
+
+
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </tbody>
+
+                            {{-- =====================================
+                                                MODAL - EDIT
+                            ====================================     --}}
+                            @foreach ($users as $user)
+                                <div class="modal fade" id="restore{{ $user->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">This can't be
+                                                    undone.
+                                                    Are you sure?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">No</button>
+                                                <a href="{{ url('admin/users/restore/' . $user->id) }}">
+                                                    <button type="button" class="btn btn-danger">Yes
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                            {{-- =====================================
+                                                    MODAL - DELETE
+                            ====================================     --}}
+
+                            @foreach ($users as $user)
+                                <div class="modal fade" id="delete{{ $user->id }}" tabindex="-1"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">This can't be
+                                                    undone. Are you sure?</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger"
+                                                    data-bs-dismiss="modal">No</button>
+                                                <a href="{{ url('admin/users/deletePermanent/' . $user->id) }}">
+                                                    <button type="button" class="btn btn-danger">
+                                                        Yes
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+
+                        </table>
                     </div>
-
-                    </tr>
-                    @endforeach
-                    @endif
-
-                    </tbody>
-                    </table>
                 </div>
             </div>
         </div>

@@ -3,7 +3,7 @@
 <!-- Main content -->
 @section('content')
     @include('admin.includes.forms')
-    <?php $permission = App\Models\Permission::all(); ?>
+
     <div class="card-header">
         <h1 class="card-title">Add Role</h1>
     </div>
@@ -22,13 +22,10 @@
             <div class="form-group" >
                 <label>Permissions</label>
                 <div class="select2-purple" data-select2-id="38">
-                    <select class="select2 select2-hidden-accessible" multiple="" id="permissions" name="permissions[]"
-                        data-placeholder="Choose Permissions" data-dropdown-css-class="select2-purple" style="width: 100%;"
-                        data-select2-id="15" tabindex="-1" aria-hidden="true" required>
-                        @foreach ($permission as $permission)
-                            <option value="{{ $permission->id }}">{{ $permission->name }}</option>
-                        @endforeach
-                    </select>
+                    @foreach ($permissions as $permission)
+                        <input type="checkbox" id="permission" name="permissions[]" value="{{ $permission->id }}">
+                        <label for="permission"> {{ $permission->name }}</label><br>
+                    @endforeach
                 </div>
             </div>
         </div>
