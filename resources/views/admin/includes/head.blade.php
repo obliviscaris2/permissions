@@ -56,6 +56,11 @@
     <link rel="stylesheet" href="{{ asset('adminasset/css/custom.css') }}" asp-append-version="true" />
 
 
+
+    
+<link href="http://nepalidatepicker.sajanmaharjan.com.np/nepali.datepicker/css/nepali.datepicker.v4.0.1.min.css" rel="stylesheet" type="text/css"/>
+
+
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
     
@@ -85,9 +90,10 @@
 
 
     <script src="{{ asset('ckeditor/ckeditor.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous">
-    </script>
+
+
+{{-- For Nepali Date picker --}}
+
     {{-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
         integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous">
     </script> --}}
