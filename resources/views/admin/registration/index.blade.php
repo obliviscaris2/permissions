@@ -71,28 +71,28 @@
                     <td>{{ $reg->transaction->tran_date ?? '' }}</td>
                     <td>{{ $reg->transaction->tran_amount ?? '' }}</td>
                     <td>
-                      @foreach ($reg->transaction->tranPurpose as $tranPurpose)
-                      {{ $tranPurpose->title }}
-                      @if (!$loop->last)
-                          , {{-- Add a comma if it's not the last tranPurpose --}}
-                      @endif
-                  @endforeach
+                        @foreach ($reg->transaction->tranPurpose as $tranPurpose)
+                            {{ $tranPurpose->title }}
+                            @if (!$loop->last)
+                                , {{-- Add a comma if it's not the last tranPurpose --}}
+                            @endif
+                        @endforeach
                     </td>
                     <td>
-                      @foreach ($reg->transaction->tranNature as $tranNature)
-                      {{ $tranNature->title }}
-                      @if (!$loop->last)
-                          , {{-- Add a comma if it's not the last tranPurpose --}}
-                      @endif
-                  @endforeach
+                        @foreach ($reg->transaction->tranNature as $tranNature)
+                            {{ $tranNature->title }}
+                            @if (!$loop->last)
+                                , {{-- Add a comma if it's not the last tranPurpose --}}
+                            @endif
+                        @endforeach
                     </td>
                     <td>
-                      @foreach ($reg->transaction->tranProof as $tranProof)
-                      {{ $tranProof->title }}
-                      @if (!$loop->last)
-                          , {{-- Add a comma if it's not the last tranPurpose --}}
-                      @endif
-                  @endforeach
+                        @foreach ($reg->transaction->tranProof as $tranProof)
+                            {{ $tranProof->title }}
+                            @if (!$loop->last)
+                                , {{-- Add a comma if it's not the last tranPurpose --}}
+                            @endif
+                        @endforeach
                     </td>
 
 

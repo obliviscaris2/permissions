@@ -16,7 +16,7 @@ class TranPurposeController extends Controller
     {
         $tranpurposes = Tran_purpose::latest()->get();
         $page_title = 'Transaction Purpose';
-        return view ('admin.tranpurpose.index', compact('tranpurpose', 'page_title'));
+        return view ('admin.tranpurpose.index', compact('tranpurposes', 'page_title'));
     }
 
     /**

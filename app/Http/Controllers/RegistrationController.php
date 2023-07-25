@@ -62,9 +62,9 @@ class RegistrationController extends Controller
             session(['selectedRegistration' => $registration->id]);
 
              // Return a success response with the view and message
-        $message = 'Record created successfully';
-        $success = true;
-        $request->session()->flash('success', $message);
+            $message = 'Record created successfully';
+            $success = true;
+            $request->session()->flash('success', $message);
         }catch (\Exception $e) {
             $message = 'An error occurred';
             $success = false;

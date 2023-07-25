@@ -16,7 +16,7 @@ class TranProofController extends Controller
     {
         $tranproofs = Tran_proof::latest()->get();
         $page_title = 'Transaction Proof';
-        return view ('admin.tranproof.index', compact('tranproof', 'page_title'));
+        return view ('admin.tranproof.index', compact('tranproofs', 'page_title'));
     }
 
     /**

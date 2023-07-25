@@ -16,7 +16,7 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('registration_id')->unique();
-             $table->date('tran_date');
+            $table->date('tran_date');
             // $table->unsignedBigInteger('tran_purpose_id')->default(0);
             // $table->unsignedBigInteger('tran_nature_id');
             // $table->unsignedBigInteger('tran_proof_id');

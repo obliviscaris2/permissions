@@ -12,6 +12,7 @@ use App\Models\Applicant;
 class Offender extends Model
 {
     use HasFactory;
+    
     public function registration(): BelongsTo
     {
         return $this->belongsTo(Registration::class);
