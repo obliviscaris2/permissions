@@ -79,6 +79,10 @@ Route::prefix('/admin')->namespace('Admin')->name('admin.')->middleware(['web', 
         Route::post('update', [ApplicantController::class, 'update'])->name('update');
         Route::get('destroy/{id}', [ApplicantController::class, 'destroy'])->name('destroy');
         Route::post('store', [ApplicantController::class, 'store'])->name('store');
+
+        Route::get('get-districts/{state_id}', [ApplicantController::class, 'getDistricts'])->name('getDistricts');
+        Route::get('get-local-governments/{district_id}', [ApplicantController::class, 'getLocalGovernments'])->name('getLocalGovernments');
+
     });
 
 
@@ -89,6 +93,8 @@ Route::prefix('/admin')->namespace('Admin')->name('admin.')->middleware(['web', 
         Route::post('update', [OffenderController::class, 'update'])->name('update');
         Route::get('destroy/{id}', [OffenderController::class, 'destroy'])->name('destroy');
         Route::post('store', [OffenderController::class, 'store'])->name('store');
+        Route::get('get-districts/{state_id}', [ApplicantController::class, 'getDistricts'])->name('getDistricts');
+        Route::get('get-local-governments/{district_id}', [ApplicantController::class, 'getLocalGovernments'])->name('getLocalGovernments');
     });
 
 

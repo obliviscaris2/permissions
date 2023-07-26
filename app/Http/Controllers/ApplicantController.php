@@ -2,13 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\State;
+use App\Models\District;
 use App\Models\Applicant;
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use App\Models\LocalGovernment;
 use Illuminate\Support\Facades\View;
 
 class ApplicantController extends Controller
 {
+
+    public function getDistricts($state_id)
+    {
+        $districts = District::where('state_id', $state_id)->get();
+        return response()->json($districts);
+    }
+
+    public function getLocalGovernments($district_id)
+    {
+        $localGovernments = LocalGovernment::where('district_id', $district_id)->get();
+        return response()->json($localGovernments);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -33,11 +49,17 @@ class ApplicantController extends Controller
         $registrations = Registration::all();
         $page_title = 'Applicant Details';
 
+        // Fetch all states
+        $states = State::all();
+
+        // Eager load the districts and local governments for better performance
+        $states->load('districts.localGovernments');
+
         if (!$registration) {
             // Handle the case when the registration is not found
             abort(404);
         }
-        return view('admin.applicant.create', compact('page_title', 'registrations', 'registration'));
+        return view('admin.applicant.create', compact('page_title', 'registrations', 'registration', 'states'));
     }
 
     /**

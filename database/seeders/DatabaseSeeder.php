@@ -18,6 +18,9 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             UserSeeder::class,
             Role_PermissionSeeder::class,
+            StateSeeder::class,
+            DistrictSeeder::class,
+            LocalGovernmentSeeder::class
         ]);
     }
 }
