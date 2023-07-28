@@ -8,6 +8,7 @@ use App\Models\Applicant;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Models\LocalGovernment;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 
 class ApplicantController extends Controller
@@ -105,7 +106,7 @@ class ApplicantController extends Controller
         $applicant->state = $validatedData['state'];
         $applicant->contact_no = $validatedData['contact_no'];
 
-
+        $applicant->user_id = Auth::user()->id;
 
         $registration->applicant()->save($applicant);
 

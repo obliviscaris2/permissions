@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Registration;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -63,14 +64,25 @@ class User extends Authenticatable
         } else return false;
     }
 
-    /**
-     * Get all of the getComments for the User
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function getComments(): HasMany
+    public function registration()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Registration::class);
     }
+
+    public function applicants()
+    {
+        return $this->hasMany(Applicant::class);
+    }
+
+    public function offenders()
+    {
+        return $this->hasMany(Offender::class);
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
+    
     use SoftDeletes;
 }

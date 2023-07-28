@@ -21,7 +21,10 @@ class Transaction extends Model
 
     ];
 
-
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function registration(): BelongsTo
     {
@@ -37,6 +40,7 @@ class Transaction extends Model
     {
         return $this->belongsToMany(Tran_nature::class, 'transaction_tran_nature', 'transaction_id', 'tran_nature_id');
     }
+
     public function tranProof(): BelongsToMany
     {
         return $this->belongsToMany(Tran_proof::class, 'transaction_tran_proof', 'transaction_id', 'tran_proof_id');

@@ -26,6 +26,12 @@ class Applicant extends Model
         'state',
         'contact_no',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function registration(): BelongsTo
     {
         return $this->belongsTo(Registration::class);

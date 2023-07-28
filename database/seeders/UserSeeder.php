@@ -38,5 +38,22 @@ class UserSeeder extends Seeder
             'is_active' => 1,
             'role' => 3
         ]);
+
+        // FOR TEST PURPOSES 
+        User::create([
+            'name' => 'kathmandu',
+            'email' => 'kathmandu@admin.com',
+            'password' => Hash::make('password'),
+            'is_active' => 1,
+            'role' => 2
+        ]);
+
+        User::create([
+            'name' => 'bhaktapur',
+            'email' => 'bhaktapur@admin.com',
+            'password' => Hash::make('password'),
+            'is_active' => 1,
+            'role' => 2
+        ]);
     }
 }

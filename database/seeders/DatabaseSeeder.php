@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             Role_PermissionSeeder::class,
             StateSeeder::class,
             DistrictSeeder::class,
-            LocalGovernmentSeeder::class
+            LocalGovernmentSeeder::class,
         ]);
     }
 }

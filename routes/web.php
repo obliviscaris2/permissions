@@ -31,7 +31,7 @@ Route::prefix('/admin')->namespace('Admin')->name('admin.')->middleware(['web', 
         Route::get('/',                    [ UsersController::class, 'index'])->name('index');
         Route::get('create',               [ UsersController::class, 'create'])->name('create');
         Route::post('store',               [ UsersController::class, 'store'])->name('store');
-        Route::get('edit/{id}',             [ UsersController::class, 'edit'])->name('edit');
+        Route::get('edit/{id}',            [ UsersController::class, 'edit'])->name('edit');
         Route::post('update',              [ UsersController::class, 'update'])->name('update');
         Route::get('delete/{id}',          [ UsersController::class, 'destroy'])->name('destroy');
         Route::get('deleted',              [ UsersController::class, 'viewDeleted'])->name('viewDeleted');

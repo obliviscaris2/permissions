@@ -14,25 +14,25 @@ class Registration extends Model
 {
     use HasFactory;
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function applicant(): HasOne
     {
         return $this->hasOne(Applicant::class);
     }
 
-
     public function offender():HasOne
     {
         return $this->hasOne(Offender::class);
     }
 
-
     public function transaction():HasOne
     {
         return $this->hasOne(Transaction::class);
     }
-
-
     
     public function discussion(): BelongsToMany
     {

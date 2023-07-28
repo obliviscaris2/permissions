@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Registration;
-use App\Models\Transaction;
-use App\Models\Tran_purpose;
-use App\Models\Applicant;
 use App\Models\Offender;
+use App\Models\Applicant;
+use App\Models\Transaction;
+use App\Models\Registration;
+use App\Models\User;
+use App\Models\Tran_purpose;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RegistrationController extends Controller
 {
@@ -18,8 +20,12 @@ class RegistrationController extends Controller
      */
     public function index()
     {
-        $registrations = Registration::with('applicant','offender','transaction')->latest()->get();
+        // $registrations = Registration::with('applicant','offender','transaction')->latest()->get();
         
+        $user = Auth::user();
+
+        // Retrieve registrations associated with the currently logged-in user
+        $registrations = $user->registration()->with('applicant', 'offender', 'transaction')->latest()->get();
         
         $page_title = 'Registration';
 
@@ -47,15 +53,28 @@ class RegistrationController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'reg_no' => 'required|unique:registrations,reg_no|string|max:255',
+            'reg_no' => 'required|string|max:255',
             'reg_date' => 'required|date',
         ]);
 
         try{
             $registration = new Registration();
 
-            $registration->reg_no = $validatedData['reg_no'];
+            // Generate a unique reg_no based on user's name
+            $user = Auth::user();
+            $unique_reg_no = $user->name . '_' . $validatedData['reg_no'];
+
+            // Check if the generated unique_reg_no is unique for the user
+            // $count = Registration::where('reg_no', $unique_reg_no)->where('user_id', $user->id)->count();
+            // if ($count > 0) {
+            //     // add a suffix to the reg_no to make it unique.
+            //     $unique_reg_no = $unique_reg_no . '_' . ($count + 1); // e.g., john_1, john_1_1, etc.
+            // }
+
+            // $registration->reg_no = $validatedData['reg_no'];
+            $registration->reg_no = $unique_reg_no;
             $registration->reg_date = $validatedData['reg_date'];
+            $registration->user_id = Auth::user()->id;
 
             $registration->save();
 

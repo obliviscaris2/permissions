@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\State;
 use App\Models\District;
 use App\Models\Offender;
-use App\Models\State;
 use App\Models\Applicant;
 use App\Models\Transaction;
 use App\Models\Registration;
 use Illuminate\Http\Request;
 use App\Models\LocalGovernment;
+use Illuminate\Support\Facades\Auth;
 
 class OffenderController extends Controller
 {
@@ -106,6 +107,8 @@ class OffenderController extends Controller
         $offender->district = $validatedData['district'];
         $offender->state = $validatedData['state'];
         $offender->contact_no = $validatedData['contact_no'];
+
+        $offender->user_id = Auth::user()->id;
 
         // Save the model
         $registration->offender()->save($offender);
