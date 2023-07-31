@@ -31,7 +31,7 @@ class PermissionSeeder extends Seeder
             'permanent_delete_users',
             'restore_users',
             'view_deleted_users',
-
+            'can_register'
         ];
         
         foreach ($permissions as $permission) {

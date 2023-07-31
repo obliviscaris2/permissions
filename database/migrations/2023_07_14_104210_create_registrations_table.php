@@ -17,7 +17,13 @@ class CreateRegistrationsTable extends Migration
             $table->bigIncrements('id');
             $table->string('reg_no');
             $table->date('reg_date');
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+
+            // Add a composite unique constraint on reg_no and user_id
+            $table->unique(['reg_no', 'user_id']);
 
         });
     }

@@ -8,6 +8,7 @@ use App\Models\Tran_nature;
 use App\Models\Tran_proof;
 use App\Models\Registration;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -75,6 +76,8 @@ class TransactionController extends Controller
         // Set the model attributes with the validated data
         $transaction->tran_date = $validatedData['tran_date'];
         $transaction->tran_amount = $validatedData['tran_amount'];
+
+        $transaction->user_id = Auth::user()->id;
        
 
         // $transaction->tran_nature_id = $validatedData['tran_nature_id'];

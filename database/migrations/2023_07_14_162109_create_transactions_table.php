@@ -25,7 +25,11 @@ class CreateTransactionsTable extends Migration
             // $table->foreign('tran_nature_id')->references('id')->on('tran_natures')->onDelete('cascade');
             // $table->foreign('tran_proof_id')->references('id')->on('tran_proofs')->onDelete('cascade');
             $table->foreign('registration_id')->references('id')->on('registrations')->onDelete('cascade');
+
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
+
         });
     }
 

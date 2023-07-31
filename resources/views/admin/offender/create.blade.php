@@ -75,25 +75,31 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">State</label>
-                        <input type="text" name="state" class="form-control" id="exampleInputName" placeholder="State"
-                            onkeyup="replaceFunction(this.value)" value="{{ old('state') }}">
+                        <label for="state">State</label>
+                        <select name="state" id="state" class="form-control">
+                            <option value="">Select State</option>
+                            @foreach ($states as $state)
+                                <option value="{{ $state->id }}">{{ $state->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">District</label>
-                        <input type="text" name="district" class="form-control" id="exampleInputName"
-                            placeholder="District" onkeyup="replaceFunction(this.value)" value="{{ old('district') }}">
+                        <label for="district">District</label>
+                        <select name="district" id="district" class="form-control">
+                            <option value="">Select District</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Local Government</label>
-                        <input type="text" name="local_govn" class="form-control" id="exampleInputName"
-                            placeholder="Local Government" onkeyup="replaceFunction(this.value)" value="{{ old('local_govn') }}">
+                        <label for="local_govn">Local Government</label>
+                        <select name="local_govn" id="local_govn" class="form-control">
+                            <option value="">Select Local Government</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -163,4 +169,84 @@
             document.getElementById('exampleInputName').value = val.replace(' ', '-');
         }
     </script> --}}
+
+    <script>
+        $(document).ready(function() {
+            $('#state').change(function() {
+                var state_id = $(this).val();
+                console.log(state_id); // Check if the state_id is correct
+                var url = '/admin/offender/get-districts/' + state_id;
+                $('#district').empty();
+                $('#local_govn').empty();
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.length > 0) {
+                            $.each(response, function(key, value) {
+                                $('#district').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+
+                            // Add this part to set the selected district value if it exists in the database
+                            var selectedDistrict =
+                                "{{ old('district', $userInformation->district ?? '') }}";
+                            if (selectedDistrict !== '') {
+                                $('#district').val(selectedDistrict);
+                                // Trigger the change event to fetch local governments for the selected district
+                                $('#district').trigger('change');
+                            }
+                        } else {
+                            $('#district').append(
+                                '<option value="">No districts found</option>');
+                            $('#local_govn').append(
+                                '<option value="">Select Local Government</option>');
+                        }
+                    }
+                });
+            });
+
+            // When a district is selected
+            $('#district').change(function() {
+                var district_id = $(this).val();
+                console.log(district_id); // Check if the district_id is correct
+                var url = '/admin/offender/get-local-governments/' + district_id;
+                $('#local_govn').empty();
+
+                $.ajax({
+                    url: url,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.length > 0) {
+                            $.each(response, function(key, value) {
+                                $('#local_govn').append('<option value="' + value.id +
+                                    '">' + value.name + '</option>');
+                            });
+
+                            // Add this part to set the selected local government value if it exists in the database
+                            var selectedLocalGovn =
+                                "{{ old('local_govn', $userInformation->local_govn ?? '') }}";
+                            if (selectedLocalGovn !== '') {
+                                $('#local_govn').val(selectedLocalGovn);
+                            }
+                        } else {
+                            $('#local_govn').append(
+                                '<option value="">No local governments found</option>');
+                        }
+                    }
+                });
+            });
+
+            // Add this part to set the selected state value when the page loads
+            var selectedState = "{{ old('state', $userInformation->state ?? '') }}";
+            if (selectedState !== '') {
+                $('#state').val(selectedState);
+                // Trigger the change event to fetch districts for the selected state
+                $('#state').trigger('change');
+            }
+        });
+    </script>
 @endsection

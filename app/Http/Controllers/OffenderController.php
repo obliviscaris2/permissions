@@ -2,14 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\State;
+use App\Models\District;
 use App\Models\Offender;
 use App\Models\Applicant;
-use App\Models\Registration;
 use App\Models\Transaction;
+use App\Models\Registration;
 use Illuminate\Http\Request;
+use App\Models\LocalGovernment;
+use Illuminate\Support\Facades\Auth;
 
 class OffenderController extends Controller
 {
+    
+    public function getDistricts($state_id)
+    {
+        $districts = District::where('state_id', $state_id)->get();
+        return response()->json($districts);
+    }
+
+    public function getLocalGovernments($district_id)
+    {
+        $localGovernments = LocalGovernment::where('district_id', $district_id)->get();
+        return response()->json($localGovernments);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +59,13 @@ class OffenderController extends Controller
             abort(404);
         }
 
-        return view('admin.offender.create', compact('page_title', 'registrations', 'registration'));
+        // Fetch all states
+        $states = State::all();
+
+        // Eager load the districts and local governments for better performance
+        $states->load('districts.localGovernments');
+
+        return view('admin.offender.create', compact('page_title', 'registrations', 'registration', 'states'));
     }
 
     /**
@@ -84,6 +107,8 @@ class OffenderController extends Controller
         $offender->district = $validatedData['district'];
         $offender->state = $validatedData['state'];
         $offender->contact_no = $validatedData['contact_no'];
+
+        $offender->user_id = Auth::user()->id;
 
         // Save the model
         $registration->offender()->save($offender);

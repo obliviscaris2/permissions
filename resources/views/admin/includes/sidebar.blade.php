@@ -46,7 +46,7 @@
                         </div>
                     </div>
 
-                    @can('hasPermission', 'view_history')
+                    @can('hasPermission', 'can_register')
                         <a class="nav-link" href="{{ route('admin.registration.index') }}" role="button">
                             <div class="d-flex align-items-center"><span class="nav-link-icon">
                                     <i class="fas fa-sort-alpha-up"></i>
