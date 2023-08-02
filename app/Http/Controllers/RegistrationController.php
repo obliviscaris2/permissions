@@ -62,7 +62,7 @@ class RegistrationController extends Controller
 
             // Generate a unique reg_no based on user's name
             $user = Auth::user();
-            $unique_reg_no = $user->name . '_' . $validatedData['reg_no'];
+            $unique_reg_no = $user->district_id . '_' . $validatedData['reg_no'];
 
             // Check if the generated unique_reg_no is unique for the user
             // $count = Registration::where('reg_no', $unique_reg_no)->where('user_id', $user->id)->count();

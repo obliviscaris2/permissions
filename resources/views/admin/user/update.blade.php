@@ -34,6 +34,17 @@
                     @endif
                 </select>
             </div>
+            <div class="form-group mt-2 mb-2">
+                <label for="Districts">Select District</label>
+                <select name="district_id" id="districts" required>
+                    <option disabled {{ $user->district_id ? '' : 'selected' }} value> -- Select district -- </option>
+                    @foreach ($districts as $district)
+                        <option value="{{ $district->id }}" {{ $user->district_id == $district->id ? 'selected' : '' }}>
+                            {{ $district->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>            
             <div class="form-group">
                 <label>Active Status</label>
                 <select class="form-control" name="is_active">

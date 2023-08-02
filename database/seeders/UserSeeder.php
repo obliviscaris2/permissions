@@ -20,7 +20,8 @@ class UserSeeder extends Seeder
             'email' => 'superadmin@superadmin.com',
             'password' => Hash::make('password'),
             'is_active' => 1,
-            'role' => 1
+            'role' => 1,
+            'district_id' => 78,
         ]);
 
         User::create([
@@ -41,19 +42,21 @@ class UserSeeder extends Seeder
 
         // FOR TEST PURPOSES 
         User::create([
-            'name' => 'kathmandu',
+            'name' => 'kathmandu_admin',
             'email' => 'kathmandu@admin.com',
             'password' => Hash::make('password'),
             'is_active' => 1,
-            'role' => 2
+            'role' => 2,
+            'district_id' => 20
         ]);
-
+        
         User::create([
-            'name' => 'bhaktapur',
+            'name' => 'bhaktapur_admin',
             'email' => 'bhaktapur@admin.com',
             'password' => Hash::make('password'),
             'is_active' => 1,
-            'role' => 2
+            'role' => 2,
+            'district_id' => 18
         ]);
     }
 }

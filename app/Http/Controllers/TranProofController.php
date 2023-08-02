@@ -26,7 +26,7 @@ class TranProofController extends Controller
      */
     public function create()
     {
-        $page_title='Create Transaction Proof';
+        $page_title = 'Create Transaction Proof';
 
         return view('admin.tranproof.create', compact('page_title'));
     }
