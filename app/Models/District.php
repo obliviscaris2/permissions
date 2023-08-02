@@ -19,4 +19,12 @@ class District extends Model
         return $this->hasMany(LocalGovernment::class);
     }
 
+    /**
+     * Getting the users belonging to this district.
+    */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
+
 }

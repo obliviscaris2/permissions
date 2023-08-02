@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\CreateUserRequest;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\UtilityFunctions;
+use App\Models\District;
 
 class UsersController extends Controller
 {
@@ -24,15 +25,14 @@ class UsersController extends Controller
      */
     public function index()
     {
-        abort_unless(Gate::allows('hasPermission','view_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'view_users'), 403);
 
-        if ( User::isAdmin() ) {
+        if (User::isAdmin()) {
 
             $users = User::with('roles')->whereNotIn('role', [1, 2])->get();
 
             return view('admin.user.index', ['users' => $users]);
-
-        } else if ( User::isSuperAdmin() ) {
+        } else if (User::isSuperAdmin()) {
 
             $users = User::with('roles')->whereNotIn('role', [1])->get();
 
@@ -47,13 +47,22 @@ class UsersController extends Controller
      */
     public function create()
     {
-        abort_unless(Gate::allows('hasPermission','create_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'create_users'), 403);
 
         if (User::isSuperAdmin()) {
 
             $role = Role::whereNotIn('id', [1])->get();
 
-            return view('admin.user.create', ['role' => $role]);
+            // Getting the 'All districts' district using the name
+            $allDistrict = District::where('name', 'All districts')->first();
+
+            // Getting all districts except 'All districts'
+            $districts = District::where('id', '!=', $allDistrict->id)->get();
+
+            return view('admin.user.create', [
+                'role'      => $role,
+                'districts' => $districts
+            ]);
         } else {
 
             $role = Role::whereNotIn('id', [1, 2])->get();
@@ -70,15 +79,18 @@ class UsersController extends Controller
      */
     public function store(CreateUserRequest $request)
     {
-        abort_unless(Gate::allows('hasPermission','create_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'create_users'), 403);
         try {
 
             $user = new User;
+
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->role = $request['role'];
             $user->password = Hash::make($request['password']);
             $user->is_active = $request['is_active'];
+            $user->district_id = $request['district_id'];
+
             if ($user->save()) {
                 History::create([
                     'description' => 'Created User with id ' . $user->id,
@@ -101,14 +113,13 @@ class UsersController extends Controller
      */
     public function viewDeleted(Request $request)
     {
-        abort_unless(Gate::allows('hasPermission','view_deleted_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'view_deleted_users'), 403);
 
         if (User::isAdmin()) {
 
             $users = User::onlyTrashed()->with('roles')->whereNotIn('role', [1, 2])->get();
 
             return view('admin.user.deleted', ['users' => $users]);
-
         } else if (User::isSuperAdmin()) {
 
             $users = User::onlyTrashed()->with('roles')->whereNotIn('role', [1])->get();
@@ -125,15 +136,26 @@ class UsersController extends Controller
      */
     public function edit($id)
     {
-        abort_unless(Gate::allows('hasPermission','update_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'update_users'), 403);
 
-        abort_unless(Gate::allows('hasUpdateUserPermission',$id),403);
+        abort_unless(Gate::allows('hasUpdateUserPermission', $id), 403);
 
         $role = UtilityFunctions::getRole();
 
         $user = User::with('roles')->whereIn('id', [$id])->first();
 
-        return view('admin.user.update', ['role' => $role, 'user' => $user]);
+        // Getting the 'All districts' district using the name
+        $allDistrict = District::where('name', 'All districts')->first();
+
+        // Getting all districts except 'All districts'
+        $districts = District::where('id', '!=', $allDistrict->id)->get();
+
+        return view('admin.user.update', [
+            'role' => $role,
+            'user' => $user,
+            'districts' => $districts
+
+        ]);
     }
 
     /**
@@ -145,25 +167,27 @@ class UsersController extends Controller
      */
     public function update(Request $request)
     {
-        abort_unless(Gate::allows('hasPermission','update_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'update_users'), 403);
 
-        abort_unless(Gate::allows('hasUpdateUserPermission',$request->id),403);
+        abort_unless(Gate::allows('hasUpdateUserPermission', $request->id), 403);
 
         try {
 
             $user = User::find($request->id);
 
-            $this->validate($request,[
+            $this->validate($request, [
                 'name' => 'required|min:3|regex:/[a-zA-Z]/',
                 'email' => ['required', Rule::unique('users')->ignore($request->id)],
                 'role' => 'required',
-                'is_active'=>'required',
+                'is_active' => 'required',
+                'district_id' => 'required'
             ]);
-    
+
             $user->name = $request['name'];
             $user->email = $request['email'];
             $user->role = $request['role'];
             $user->is_active = $request['is_active'];
+            $user->district_id = $request['district_id'];
 
             if ($user->update()) {
 
@@ -178,9 +202,7 @@ class UsersController extends Controller
             }
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Error!! User Information Not Updated');
-
         }
-
     }
 
     /**
@@ -191,10 +213,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        abort_unless(Gate::allows('hasPermission','delete_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'delete_users'), 403);
 
         try {
-            
+
             $user = User::find($id);
             if ($user->delete()) {
                 History::create([
@@ -207,12 +229,10 @@ class UsersController extends Controller
             }
         } catch (\Exception) {
             return redirect()->back()->with('error', 'Error!! Failed to delete user');
-
         }
-
     }
 
-     /**
+    /**
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\User  $user
@@ -221,7 +241,7 @@ class UsersController extends Controller
     public function permanentDestroy($id)
     {
 
-        abort_unless(Gate::allows('hasPermission','permanent_delete_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'permanent_delete_users'), 403);
 
         try {
             $user = User::withTrashed()->find($id);
@@ -237,7 +257,6 @@ class UsersController extends Controller
         } catch (\Exception) {
             return Redirect::back()->with('error', 'Error!! Failed to delete user');
         }
-
     }
 
     /**
@@ -248,7 +267,7 @@ class UsersController extends Controller
      */
     public function restore($id)
     {
-        abort_unless(Gate::allows('hasPermission','restore_users'),403);
+        abort_unless(Gate::allows('hasPermission', 'restore_users'), 403);
 
         try {
             $user = User::withTrashed()->find($id);
@@ -265,5 +284,4 @@ class UsersController extends Controller
             return Redirect::back()->with('error', 'Error!! Failed to restore user');
         }
     }
-
 }

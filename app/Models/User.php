@@ -24,6 +24,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'district_id'
     ];
 
     /**
@@ -83,6 +84,15 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+
+    /**
+        * Getting the district that the user belongs to.
+    */
+    public function district()
+    {
+        return $this->belongsTo(District::class);
+    }
+
     
     use SoftDeletes;
 }

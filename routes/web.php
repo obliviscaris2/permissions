@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UsersController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ApplicantController;
+use App\Http\Controllers\NoTransactionPurposeController;
 use App\Http\Controllers\OffenderController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\TranPurposeController;
@@ -64,79 +65,86 @@ Route::prefix('/admin')->namespace('Admin')->name('admin.')->middleware(['web', 
 
 
     Route::as('registration.')->prefix('registration')->group(function(){
-        Route::get('index', [RegistrationController::class, 'index'])->name('index');
-        Route::get('create', [RegistrationController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [RegistrationController::class, 'edit'])->name('edit');
-        Route::post('update', [RegistrationController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [RegistrationController::class, 'destroy'])->name('destroy');
-        Route::post('store', [RegistrationController::class, 'store'])->name('store');
+        Route::get('index',                [RegistrationController::class, 'index'])->name('index');
+        Route::get('create',               [RegistrationController::class, 'create'])->name('create');
+        Route::get('edit/{id}',            [RegistrationController::class, 'edit'])->name('edit');
+        Route::post('update',              [RegistrationController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',         [RegistrationController::class, 'destroy'])->name('destroy');
+        Route::post('store',               [RegistrationController::class, 'store'])->name('store');
     });
 
     Route::as('applicant.')->prefix('applicant')->group(function(){
-        Route::get('index', [ApplicantController::class, 'index'])->name('index');
-        Route::get('create', [ApplicantController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [ApplicantController::class, 'edit'])->name('edit');
-        Route::post('update', [ApplicantController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [ApplicantController::class, 'destroy'])->name('destroy');
-        Route::post('store', [ApplicantController::class, 'store'])->name('store');
+        Route::get('index',                               [ApplicantController::class, 'index'])->name('index');
+        Route::get('create',                              [ApplicantController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                           [ApplicantController::class, 'edit'])->name('edit');
+        Route::post('update',                             [ApplicantController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',                        [ApplicantController::class, 'destroy'])->name('destroy');
+        Route::post('store',                              [ApplicantController::class, 'store'])->name('store');
 
-        Route::get('get-districts/{state_id}', [ApplicantController::class, 'getDistricts'])->name('getDistricts');
+        Route::get('get-districts/{state_id}',            [ApplicantController::class, 'getDistricts'])->name('getDistricts');
         Route::get('get-local-governments/{district_id}', [ApplicantController::class, 'getLocalGovernments'])->name('getLocalGovernments');
 
     });
 
 
     Route::as('offender.')->prefix('offender')->group(function(){
-        Route::get('index', [OffenderController::class, 'index'])->name('index');
-        Route::get('create', [OffenderController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [OffenderController::class, 'edit'])->name('edit');
-        Route::post('update', [OffenderController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [OffenderController::class, 'destroy'])->name('destroy');
-        Route::post('store', [OffenderController::class, 'store'])->name('store');
-        Route::get('get-districts/{state_id}', [ApplicantController::class, 'getDistricts'])->name('getDistricts');
+        Route::get('index',                               [OffenderController::class, 'index'])->name('index');
+        Route::get('create',                              [OffenderController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                           [OffenderController::class, 'edit'])->name('edit');
+        Route::post('update',                             [OffenderController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',                        [OffenderController::class, 'destroy'])->name('destroy');
+        Route::post('store',                              [OffenderController::class, 'store'])->name('store');
+        Route::get('get-districts/{state_id}',            [ApplicantController::class, 'getDistricts'])->name('getDistricts');
         Route::get('get-local-governments/{district_id}', [ApplicantController::class, 'getLocalGovernments'])->name('getLocalGovernments');
     });
 
 
     Route::as('transaction.')->prefix('transaction')->group(function(){
-        Route::get('index', [TransactionController::class, 'index'])->name('index');
-        Route::get('create', [TransactionController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [TransactionController::class, 'edit'])->name('edit');
-        Route::post('update', [TransactionController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [TransactionController::class, 'destroy'])->name('destroy');
-        Route::post('store', [TransactionController::class, 'store'])->name('store');
+        Route::get('index',                     [TransactionController::class, 'index'])->name('index');
+        Route::get('create',                    [TransactionController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                 [TransactionController::class, 'edit'])->name('edit');
+        Route::post('update',                   [TransactionController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',              [TransactionController::class, 'destroy'])->name('destroy');
+        Route::post('store',                    [TransactionController::class, 'store'])->name('store');
     });
 
     Route::as('tranpurpose.')->prefix('tranpurpose')->group(function(){
-        Route::get('index', [TranPurposeController::class, 'index'])->name('index');
-        Route::get('create', [TranPurposeController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [TranPurposeController::class, 'edit'])->name('edit');
-        Route::post('update', [TranPurposeController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [TranPurposeController::class, 'destroy'])->name('destroy');
-        Route::post('store', [TranPurposeController::class, 'store'])->name('store');
+        Route::get('index',                     [TranPurposeController::class, 'index'])->name('index');
+        Route::get('create',                    [TranPurposeController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                 [TranPurposeController::class, 'edit'])->name('edit');
+        Route::post('update',                   [TranPurposeController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',              [TranPurposeController::class, 'destroy'])->name('destroy');
+        Route::post('store',                    [TranPurposeController::class, 'store'])->name('store');
     });
 
 
     Route::as('trannature.')->prefix('trannature')->group(function(){
-        Route::get('index', [TranNatureController::class, 'index'])->name('index');
-        Route::get('create', [TranNatureController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [TranNatureController::class, 'edit'])->name('edit');
-        Route::post('update', [TranNatureController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [TranNatureController::class, 'destroy'])->name('destroy');
-        Route::post('store', [TranNatureController::class, 'store'])->name('store');
+        Route::get('index',                     [TranNatureController::class, 'index'])->name('index');
+        Route::get('create',                    [TranNatureController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                 [TranNatureController::class, 'edit'])->name('edit');
+        Route::post('update',                   [TranNatureController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',              [TranNatureController::class, 'destroy'])->name('destroy');
+        Route::post('store',                    [TranNatureController::class, 'store'])->name('store');
     });
 
 
     Route::as('tranproof.')->prefix('tranproof')->group(function(){
-        Route::get('index', [TranProofController::class, 'index'])->name('index');
-        Route::get('create', [TranProofController::class, 'create'])->name('create');
-        Route::get('edit/{id}', [TranProofController::class, 'edit'])->name('edit');
-        Route::post('update', [TranProofController::class, 'update'])->name('update');
-        Route::get('destroy/{id}', [TranProofController::class, 'destroy'])->name('destroy');
-        Route::post('store', [TranProofController::class, 'store'])->name('store');
+        Route::get('index',                     [TranProofController::class, 'index'])->name('index');
+        Route::get('create',                    [TranProofController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                 [TranProofController::class, 'edit'])->name('edit');
+        Route::post('update',                   [TranProofController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',              [TranProofController::class, 'destroy'])->name('destroy');
+        Route::post('store',                    [TranProofController::class, 'store'])->name('store');
     });
 
-
+    Route::as('notransaction.')->prefix('notransaction')->group(function(){
+        Route::get('index',                     [NoTransactionPurposeController::class, 'index'])->name('index');
+        Route::get('create',                    [NoTransactionPurposeController::class, 'create'])->name('create');
+        Route::get('edit/{id}',                 [NoTransactionPurposeController::class, 'edit'])->name('edit');
+        Route::post('update',                   [NoTransactionPurposeController::class, 'update'])->name('update');
+        Route::get('destroy/{id}',              [NoTransactionPurposeController::class, 'destroy'])->name('destroy');
+        Route::post('store',                    [NoTransactionPurposeController::class, 'store'])->name('store');
+    });
    
 });
 

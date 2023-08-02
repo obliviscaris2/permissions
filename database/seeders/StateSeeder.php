@@ -21,5 +21,8 @@ class StateSeeder extends Seeder
         State::create(['name' => 'Lumbini Province']);
         State::create(['name' => 'Karnali Province']);
         State::create(['name' => 'Sudurpaschim Province']);
+
+        // FOR SUPERADMIN 
+        State::create(['name' => 'All Provinces']);
     }
 }

@@ -100,12 +100,21 @@
                         </a>
                     @endcan
 
-                    @can('hasPermission', 'view_history')
+                    @can('hasPermission', ['view_history'])
                         <a class="nav-link" href="{{ route('admin.tranproof.index') }}" role="button">
                             <div class="d-flex align-items-center"><span class="nav-link-icon">
                                     <i class="fas fa-sort-alpha-up"></i>
                                     <!-- <span class="fas fa-comments"></span> Font Awesome fontawesome.com --></span><span
                                     class="nav-link-text ps-1">Tranproof</span></div>
+                        </a>
+                    @endcan
+
+                    @can('hasPermission', 'view_history')
+                        <a class="nav-link" href="{{ route('admin.notransaction.index') }}" role="button">
+                            <div class="d-flex align-items-center"><span class="nav-link-icon">
+                                    <i class="fas fa-sort-alpha-up"></i>
+                                    <!-- <span class="fas fa-comments"></span> Font Awesome fontawesome.com --></span><span
+                                    class="nav-link-text ps-1">No Transaction Purpose</span></div>
                         </a>
                     @endcan
 
