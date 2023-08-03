@@ -22,10 +22,10 @@ class RoleSeeder extends Seeder
             ]);
         }
 
-        $permission=Permission::all()->pluck('id');
-        $admin=Role::findOrFail(1);
+        $permission = Permission::all()->pluck('id');
+        $admin = Role::findOrFail(1);
         $admin->permissions()->sync($permission);
-        $adminpermission=Permission::whereIn('name',[
+        $adminpermission = Permission::whereIn('name', [
             'create_users',
             'view_users',
             'update_users',
