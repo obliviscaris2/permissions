@@ -1,1 +1,1 @@
-Roles/Permissions/Users - CRUD
+Admin Panel with roles and permissions create/update/delete, assignining
