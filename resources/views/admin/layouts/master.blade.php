@@ -25,44 +25,6 @@
 
                 @include('admin.includes.navbar')
 
-                {{-- <script>
-              var navbarPosition = localStorage.getItem('navbarPosition');
-              var navbarVertical = document.querySelector('.navbar-vertical');
-              var navbarTopVertical = document.querySelector('.content .navbar-top');
-              var navbarTop = document.querySelector('[data-layout] .navbar-top:not([data-double-top-nav');
-              var navbarDoubleTop = document.querySelector('[data-double-top-nav]');
-              var navbarTopCombo = document.querySelector('.content [data-navbar-top="combo"]');
-  
-              if (localStorage.getItem('navbarPosition') === 'double-top') {
-                document.documentElement.classList.toggle('double-top-nav-layout');
-              }
-  
-              if (navbarPosition === 'top') {
-                navbarTop.removeAttribute('style');
-                navbarTopVertical.remove(navbarTopVertical);
-                navbarVertical.remove(navbarVertical);
-                navbarTopCombo.remove(navbarTopCombo);
-                navbarDoubleTop.remove(navbarDoubleTop);
-              } else if (navbarPosition === 'combo') {
-                navbarVertical.removeAttribute('style');
-                navbarTopCombo.removeAttribute('style');
-                navbarTop.remove(navbarTop);
-                navbarTopVertical.remove(navbarTopVertical);
-                navbarDoubleTop.remove(navbarDoubleTop);
-              } else if (navbarPosition === 'double-top') {
-                navbarDoubleTop.removeAttribute('style');
-                navbarTopVertical.remove(navbarTopVertical);
-                navbarVertical.remove(navbarVertical);
-                navbarTop.remove(navbarTop);
-                navbarTopCombo.remove(navbarTopCombo);
-              } else {
-                navbarVertical.removeAttribute('style');
-                navbarTopVertical.removeAttribute('style');
-                navbarTop.remove(navbarTop);
-                navbarDoubleTop.remove(navbarDoubleTop);
-                navbarTopCombo.remove(navbarTopCombo);
-              }
-            </script> --}}
                 @yield('content')
 
 
@@ -163,7 +125,7 @@
         <div class="offcanvas-header settings-panel-header bg-shape">
             <div class="z-index-1 py-1 light">
                 <h5 class="text-white"> <span class="fas fa-palette me-2 fs-0"></span>Settings</h5>
-                <p class="mb-0 fs--1 text-white opacity-75"> Set your own customized style</p>
+                <p class="mb-0 fs--1 text-white opacity-75"> Set your ownnnn customized style</p>
             </div>
             <button class="btn-close btn-close-white z-index-1 mt-0" type="button" data-bs-dismiss="offcanvas"
                 aria-label="Close"></button>
@@ -192,62 +154,7 @@
                 </div>
             </div>
             <hr />
-            <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-start"><img class="me-2"
-                        src="/assets/img/icons/left-arrow-from-left.svg" width="20" alt="" />
-                    <div class="flex-1">
-                        <h5 class="fs-0">RTL Mode</h5>
-                        <p class="fs--1 mb-0">Switch your language direction </p><a class="fs--1"
-                            href="documentation/customization/configuration.html">RTL Documentation</a>
-                    </div>
-                </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input ms-0" id="mode-rtl" type="checkbox" data-theme-control="isRTL" />
-                </div>
-            </div>
-            <hr />
-            <div class="d-flex justify-content-between">
-                <div class="d-flex align-items-start"><img class="me-2" src="/assets/img/icons/arrows-h.svg"
-                        width="20" alt="" />
-                    <div class="flex-1">
-                        <h5 class="fs-0">Fluid Layout</h5>
-                        <p class="fs--1 mb-0">Toggle container layout system </p><a class="fs--1"
-                            href="documentation/customization/configuration.html">Fluid Documentation</a>
-                    </div>
-                </div>
-                <div class="form-check form-switch">
-                    <input class="form-check-input ms-0" id="mode-fluid" type="checkbox" data-theme-control="isFluid" />
-                </div>
-            </div>
-            <hr />
-            <div class="d-flex align-items-start"><img class="me-2" src="/assets/img/icons/paragraph.svg"
-                    width="20" alt="" />
-                <div class="flex-1">
-                    <h5 class="fs-0 d-flex align-items-center">Navigation Position </h5>
-                    <p class="fs--1 mb-2">Select a suitable navigation system for your web application </p>
-                    <div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="option-navbar-vertical" type="radio" name="navbar"
-                                value="vertical" data-page-url="/modules/components/navs-and-tabs/vertical-navbar.html"
-                                data-theme-control="navbarPosition" />
-                            <label class="form-check-label" for="option-navbar-vertical">Vertical</label>
-                        </div>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" id="option-navbar-top" type="radio" name="navbar"
-                                value="top" data-page-url="modules/components/navs-and-tabs/top-navbar.html"
-                                data-theme-control="navbarPosition" />
-                            <label class="form-check-label" for="option-navbar-top">Top</label>
-                        </div>
-                        <div class="form-check form-check-inline me-0">
-                            <input class="form-check-input" id="option-navbar-combo" type="radio" name="navbar"
-                                value="combo" data-page-url="modules/components/navs-and-tabs/combo-navbar.html"
-                                data-theme-control="navbarPosition" />
-                            <label class="form-check-label" for="option-navbar-combo">Combo</label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <hr />
+
             <h5 class="fs-0 d-flex align-items-center">Vertical Navbar Style</h5>
             <p class="fs--1 mb-0">Switch between styles for your vertical navbar </p>
             <p> <a class="fs--1" href="modules/components/navs-and-tabs/vertical-navbar.html#navbar-styles">See
